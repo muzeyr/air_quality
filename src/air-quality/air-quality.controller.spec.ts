@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AirQualityController } from './air-quality.controller';
 import { AirQualityService } from './air-quality.service';
+import { AirQualityData } from './dto/air-quality-data.dto';
+import { AirQualityController } from "./air-quality.controller";
 
 describe('AirQualityController', () => {
   let controller: AirQualityController;
@@ -17,10 +18,21 @@ describe('AirQualityController', () => {
   });
 
   describe('getAirQuality', () => {
-    it('should return air quality data for the given location', async () => {
-      const airQualityData = { /* Sample air quality data */ };
-      jest.spyOn(service, 'getAirQuality').mockImplementation(() => Promise.resolve(airQualityData));
-      expect(await controller.getAirQuality()).toBe(airQualityData);
+    it('should return air quality data for a given location', async () => {
+      const testData: AirQualityData = {
+        city: 'Test City',
+        state: 'Test State',
+        country: 'Test Country',
+        location: { type: 'Point', coordinates: [0, 0] },
+        current: {
+          pollution: { ts: '2023-03-04T09:00:00.000Z', aqius: 50, mainus: 'o3', aqicn: 20, maincn: 'o3' },
+          weather: { ts: '2023-03-04T11:00:00.000Z', tp: 20, pr: 1013, hu: 40, ws: 2.0, wd: 180, ic: '01d' },
+        },
+      };
+      jest.spyOn(service, 'getAirQuality').mockResolvedValue(testData);
+
+      expect(await controller.getAirQuality()).toBe(testData);
+      expect(service.getAirQuality).toHaveBeenCalled();
     });
   });
 });

@@ -13,7 +13,8 @@ export class AirQualityData {
   @ApiProperty()
   location: {
     type: string;
-    coordinates: number[];
+    coordinateX: number;
+    coordinateY: number;
   };
 
   @ApiProperty()
@@ -63,7 +64,8 @@ export class AirQualityData {
     this.city = city;
     this.state = state;
     this.country = country;
-    this.location = location;
+    this.location.coordinateX = location.coordinates[0];
+    this.location.coordinateY = location.coordinates[1];
     this.current = current;
   }
 }

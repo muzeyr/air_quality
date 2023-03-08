@@ -1,0 +1,27 @@
+version: '3.1'
+services:
+  mongodb:
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=$DB_PASSWORD
+      - MONGO_INITDB_ROOT_PASSWORD=$DB_PASSWORD
+      - MONGO_INITDB_DATABASE=$DB_DATABASE
+    #    mysql_db:
+    #image: mysql:5.7
+    #platform: linux/amd64
+    #restart: always
+    #container_name: mysql_container
+    #env_file: ./.env
+        #environment:
+        #- MYSQL_ROOT_PASSWORD=$MYSQL_PASSWORD
+      #- MYSQL_DATABASE=$MYSQL_DATABASE
+        #ports:
+      #- $MYSQL_PORT:$MYSQL_PORT
+      #volumes:
+      # - mysql_db_data:/var/lib/mysql
+
+volumes:
+  mysql_db_data:
