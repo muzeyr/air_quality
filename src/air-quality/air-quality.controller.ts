@@ -11,7 +11,7 @@ export class AirQualityController {
   @Get()
   @ApiOperation({ summary: 'Get air quality data for a given location' })
   @ApiResponse({ status: 200, description: 'Air quality data retrieved successfully', type: AirQualityData })
-  async getAirQuality(): Promise<AirQualityData> {
+  async getAirQuality() {
     return this.airQualityService.getAirQuality();
   }
 }
