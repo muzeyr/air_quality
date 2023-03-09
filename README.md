@@ -1,73 +1,32 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Air Quality API
+This project is an implementation of a REST API that fetches air quality data using the IQAir API. The project was completed as part of an assignment that required implementing a Node.js-based REST API to fetch air quality data using the IQAir API and store it in a database.
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Configuration
+To set up the project, an API key was obtained from IQAir, and the "nearest_city" endpoint was tested using Postman. Once the endpoint was working correctly, a Node.js REST API was built to fetch air quality data using the endpoint.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Integration
+The REST API was implemented using Nest.js, and an endpoint was created to fetch air quality data based on the user's longitude and latitude. A CRON job was set up to check air quality for the Paris zone every minute and save the results in the database.
 
-## Description
+## Database
+The data was stored in a MongoDB database using Mongoose, and the data was saved with a timestamp to track when the air quality data was collected.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Testing
+Unit tests were implemented to test the functionality of the REST API, and integration tests were run to test the entire application.
 
-## Installation
 
-```bash
-$ npm install
-```
+## CRON Job
+A CRON job was implemented using Nest.js to fetch air quality data for the Paris zone (latitude: 48.856613, longitude: 2.352222) every 2 minutes. The CRON job was scheduled using the @nestjs/schedule package, and the data was saved to a MongoDB database using Mongoose. The data was stored with a timestamp to track when the air quality data was collected.
 
-## Running the app
+To test the CRON job, integration tests were implemented to ensure that the job was running correctly and that the data was being saved to the database at the correct intervals. The tests were run automatically using Jest, and the results were recorded in the test reports.
+##  Extensibility :rocket:
+This project has been designed with extensibility in mind. It uses modular design patterns, and the code is well-organized and easy to understand.
 
-```bash
-# development
-$ npm run start
+🧩 New endpoints can be added easily by creating new controllers and routes.
 
-# watch mode
-$ npm run start:dev
+🔗 Additional APIs can be integrated by creating new services that use the existing infrastructure.
 
-# production mode
-$ npm run start:prod
-```
+📦 New functionality can be added by installing new packages and modules.
 
-## Test
+🤝 The project is open-source, and contributions are welcome from anyone who wants to help improve the code.
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+🚀 With the help of the community, this project can continue to evolve and become even more powerful over time.
