@@ -7,6 +7,11 @@ export abstract class AppConfigServiceInterface {
   readonly dbPassword: string;
   readonly dbPort: string;
   readonly dbUser: string;
+  readonly redisPort: number;
+  readonly redisUrl: string;
+  readonly redisDb: number;
+
+
 }
 
 
@@ -28,6 +33,15 @@ export default class AppConfigService implements AppConfigServiceInterface {
   }
   get dbUser(): string {
     return this.configService.get<string>('app.dbUser');
+  }
+  get redisUrl(): string {
+    return this.configService.get<string>('app.redisUrl');
+  }
+  get redisPort(): number {
+    return this.configService.get<number>('app.redisPort');
+  }
+  get redisDb(): number {
+    return this.configService.get<number>('app.redisDb');
   }
 
 }

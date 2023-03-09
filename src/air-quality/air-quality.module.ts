@@ -2,65 +2,22 @@ import { Module } from '@nestjs/common';
 import { AirQualityController } from './air-quality.controller';
 import { AirQualityService } from './air-quality.service';
 import { MongooseModule } from "@nestjs/mongoose";
-import { ConfigModule } from "@nestjs/config";
-import { Schema } from "mongoose";
-import { databaseConfig } from "../config/database.config";
+import AppConfigModule from "../config/app/configuration.module";
+import { QueuesModule } from "../queues/queues.module";
+import { CronModule } from "../cron/cron.module";
+import { AirQuality, AirQualitySchema } from "./schemas/air_quality.schema";
 
 @Module({
   imports: [
-    MongooseModule.forFeatureAsync([
-      {
-        name: 'City',
-        useFactory: () => {
-          const CitySchema = new Schema(
-            {
-              city: { type: String, required: true },
-              state: { type: String, required: true },
-              country: { type: String, required: true },
-              location: {
-                type: {
-                  type: String,
-                  enum: ['Point'],
-                  required: true,
-                },
-                coordinates: {
-                  type: [Number],
-                  required: true,
-                },
-              },
-              current: {
-                pollution: {
-                  ts: Date,
-                  aqius: Number,
-                  mainus: String,
-                  aqicn: Number,
-                  maincn: String,
-                },
-                weather: {
-                  ts: Date,
-                  tp: Number,
-                  pr: Number,
-                  hu: Number,
-                  ws: Number,
-                  wd: Number,
-                  ic: String,
-                },
-              },
-            },
-            { timestamps: true },
-          );
-          return CitySchema;
-        },
-      },
+    MongooseModule.forFeature([
+      { name: AirQuality.name, schema: AirQualitySchema },
     ]),
-    MongooseModule.forRootAsync({
-      imports: [ConfigModule], // ConfigModule import edilir
-      useFactory: async () => ({
-        uri: databaseConfig.uri,
-      }),
-    }),
+    AppConfigModule,
+    QueuesModule,
+    CronModule,
   ],
   controllers: [AirQualityController],
   providers: [AirQualityService],
+  exports:[AirQualityService]
 })
 export class AirQualityModule {}

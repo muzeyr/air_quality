@@ -7,24 +7,12 @@ services:
       - "27017:27017"
     volumes:
       - mongodb:/data/db
-    #environment:
-      # - MONGO_INITDB_ROOT_USERNAME=yassir
-      # - MONGO_INITDB_ROOT_PASSWORD=ac1bSNJhF5ggBbtK
-   #   - MONGO_INITDB_DATABASE= air_quality
-    #    mysql_db:
-    #image: mysql:5.7
-    #platform: linux/amd64
-    #restart: always
-    #container_name: mysql_container
-    #env_file: ./.env
-        #environment:
-        #- MYSQL_ROOT_PASSWORD=$MYSQL_PASSWORD
-      #- MYSQL_DATABASE=$MYSQL_DATABASE
-        #ports:
-      #- $MYSQL_PORT:$MYSQL_PORT
-      #volumes:
-      # - mysql_db_data:/var/lib/mysql
+  redis:
+    image: redis:latest
+    ports:
+      - '6379:6379'
 
 volumes:
   mysql_db_data:
   mongodb:
+  redis:

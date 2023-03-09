@@ -2,6 +2,7 @@ import { Controller, Get } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AirQualityService } from './air-quality.service';
 import { AirQualityData } from './dto/air-quality-data.dto';
+import { DefaultResponse } from "../utils/default.response.entity";
 
 @ApiTags('Air Quality')
 @Controller('air-quality')
@@ -12,6 +13,8 @@ export class AirQualityController {
   @ApiOperation({ summary: 'Get air quality data for a given location' })
   @ApiResponse({ status: 200, description: 'Air quality data retrieved successfully', type: AirQualityData })
   async getAirQuality() {
-    return this.airQualityService.getAirQuality();
+    return DefaultResponse.toResponse(
+      this.airQualityService.getAirQuality()
+    );
   }
 }

@@ -1,38 +1,79 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AirQualityController } from './air-quality.controller';
 import { AirQualityService } from './air-quality.service';
-import { AirQualityData } from './dto/air-quality-data.dto';
+import { getModelToken } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { AirQuality } from './schemas/air_quality.schema';
+import axios from 'axios';
+import { Cron } from '@nestjs/schedule';
+import { oneMinute } from '../cron/enum/time.const';
 
-describe('AirQualityController', () => {
-  let controller: AirQualityController;
+describe('AirQualityService', () => {
   let service: AirQualityService;
+  let airQualityModel: Model<AirQuality>;
+
+  const cityDocument = {
+    city: 'Test City',
+    state: 'Test State',
+    country: 'Test Country',
+    location: {
+      type: 'Point',
+      coordinates: [10, 20],
+    },
+    current: {
+      weather: {
+        ts: 1646810400,
+        tp: 15,
+        pr: 1020,
+        hu: 40,
+        ws: 5,
+        wd: 20,
+        ic: '04d',
+      },
+      pollution: {
+        ts: 1646810400,
+        aqius: 20,
+        mainus: 'p2',
+        aqicn: 10,
+        maincn: 'p1',
+      },
+    },
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [AirQualityController],
-      providers: [AirQualityService],
+      providers: [
+        AirQualityService,
+        {
+          provide: getModelToken(AirQuality.name),
+          useValue: {
+            new: jest.fn().mockResolvedValue(cityDocument),
+            constructor: jest.fn().mockResolvedValue(cityDocument),
+            find: jest.fn(),
+            findOne: jest.fn(),
+            updateOne: jest.fn(),
+            deleteOne: jest.fn(),
+            exec: jest.fn(),
+            save: jest.fn().mockResolvedValue(cityDocument),
+          },
+        },
+      ],
     }).compile();
 
-    controller = module.get<AirQualityController>(AirQualityController);
     service = module.get<AirQualityService>(AirQualityService);
+    airQualityModel = module.get<Model<AirQuality>>(getModelToken(AirQuality.name));
   });
 
-  describe('getAirQuality', () => {
-    it('should return air quality data for a given location', async () => {
-      const testData: AirQualityData = {
-        city: 'Test City',
-        state: 'Test State',
-        country: 'Test Country',
-        location: { type: 'Point', coordinates: [0, 0] },
-        current: {
-          pollution: { ts: '2023-03-04T09:00:00.000Z', aqius: 50, mainus: 'o3', aqicn: 20, maincn: 'o3' },
-          weather: { ts: '2023-03-04T11:00:00.000Z', tp: 20, pr: 1013, hu: 40, ws: 2.0, wd: 180, ic: '01d' },
-        },
-      };
-      jest.spyOn(service, 'getAirQuality').mockResolvedValue(testData);
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
-      expect(await controller.getAirQuality()).toBe(testData);
-      expect(service.getAirQuality).toHaveBeenCalled();
+  describe('createCity', () => {
+    it('should map the city document to an air quality schema and save it to the database', async () => {
+      const mapToAirQualitySpy = jest.spyOn(service, 'mapToAirQuality').mockReturnValueOnce(cityDocument as unknown as AirQuality);
+
+      await service.mapToAirQuality(cityDocument);
+
+      expect(mapToAirQualitySpy).toHaveBeenCalledWith(cityDocument);
     });
   });
 });
